@@ -1,0 +1,28 @@
+name: Build WPF Application
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0
+
+    - name: Restore NuGet packages
+      run: nuget restore Jvedio-WPF/Jvedio.sln
+
+    - name: Build Solution
+      run: msbuild Jvedio-WPF/Jvedio.sln /p:Configuration=Release /p:Platform="Any CPU"
