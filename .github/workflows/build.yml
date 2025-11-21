@@ -11,18 +11,22 @@ jobs:
     name: Build
     runs-on: windows-latest
 
+    env:
+      Configuration: Release
+      Platform: Any CPU
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1.1
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
 
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
 
-    - name: Restore NuGet packages
-      run: nuget restore Jvedio-WPF/Jvedio.sln
+      - name: Restore NuGet packages
+        run: nuget restore Jvedio-WPF/Jvedio.sln
 
-    - name: Build Solution
-      run: msbuild Jvedio-WPF/Jvedio.sln /p:Configuration=Release /p:Platform="Any CPU"
+      - name: Build Solution
+        run: msbuild Jvedio-WPF/Jvedio.sln /p:Configuration=${{ env.Configuration }} /p:Platform="${{ env.Platform }}" /m
